@@ -87,8 +87,11 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
         return deptList.stream()
                 .filter(dept -> dept.getParentId().equals(parentId))
                 .map(dept -> {
+                    // 使用mapstruct将这里转换成了deptvo
                     DeptVO deptVO = deptConverter.toVo(dept);
+                    // 继续递归
                     List<DeptVO> children = recurDeptList(dept.getId(), deptList);
+                    // 设置mapstruct中无法设置的属性
                     deptVO.setChildren(children);
                     return deptVO;
                 }).toList();
